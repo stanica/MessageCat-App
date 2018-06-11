@@ -37,6 +37,7 @@
     "lodash": "^4.17.4",
     "lodash-es": "^4.17.4",
     "lua.vm.js": "0.0.1",
+    "luamin": "^1.0.4",
     "lusca": "^1.4.1",
     "method-override": "^2.3.10",
     "mongoose": "^4.1.2",

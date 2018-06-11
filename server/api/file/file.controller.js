@@ -50,6 +50,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const fs = require('fs');
 const path = require('path');
 const readLastLines = require('read-last-lines');
+const luamin = require('luamin');
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -186,6 +187,9 @@ function getFile(req, res) {
           res.end();
         });
       } else {
+        if (req.query.min === 'true') {
+          data = luamin.minify(data);
+        }
         res.writeHead(200, { 'Content-Type': 'text/json', 'Transfer-Encoding': 'Identity', 'Content-Length': Buffer.byteLength(data.toString()) });
         res.write(data);
         res.end();
