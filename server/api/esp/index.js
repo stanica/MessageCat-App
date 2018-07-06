@@ -12,6 +12,7 @@ var controller = require('./esp.controller');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/instagram/:id', controller.getFollowers);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.upsert);

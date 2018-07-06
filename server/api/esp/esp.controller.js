@@ -28,6 +28,7 @@ exports.create = create;
 exports.upsert = upsert;
 exports.patch = patch;
 exports.destroy = destroy;
+exports.getFollowers = getFollowers;
 
 var _fastJsonPatch = require('fast-json-patch');
 
@@ -37,6 +38,7 @@ var _esp2 = _interopRequireDefault(_esp);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const https = require('https');
 var fs = require('fs');
 var rimraf = require('rimraf');
 const path = require('path');
@@ -149,5 +151,26 @@ function patch(req, res) {
 // Deletes a Esp from the DB
 function destroy(req, res) {
   return _esp2.default.findById(req.params.id).exec().then(handleEntityNotFound(res)).then(removeEntity(res)).catch(handleError(res));
+}
+
+// Get Instagram followers for a username
+function getFollowers(req, res) {
+  https.get('https://www.instagram.com/web/search/topsearch/?query=' + req.params.id, resp => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', chunk => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log(JSON.parse(data).users[0]);
+      return respondWithResult(res)(JSON.parse(data).users[0].user);
+    });
+  }).on("error", err => {
+    console.log("Error: " + err.message);
+    return handleError(res)(err);
+  });
 }
 //# sourceMappingURL=esp.controller.js.map
