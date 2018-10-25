@@ -49,7 +49,9 @@ _mongoose2.default.connection.on('error', function (err) {
 });
 
 // Setup server
+var bodyParser = require('body-parser');
 var app = (0, _express2.default)();
+app.use(bodyParser.text());
 var server = _http2.default.createServer(app);
 
 (0, _express4.default)(app);
